@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import GeneratedWords from "./components/GeneratedWords";
 import RestartButton from "./components/RestartButton";
 import Results from "./components/Results";
@@ -11,8 +11,6 @@ const App = () => {
   const { words, typed, timeLeft, errors, state, restart, totalTyped } =
     useEngine();
 
-  const [userInput, setUserInput] = useState("");
-
   return (
     <div className="min-h-screen bg-slate-900 text-slate-50" style={{padding: "20px"}}>
       <Header />
@@ -23,7 +21,6 @@ const App = () => {
           <UserTypings
             className="absolute inset-0"
             words={words}
-            onInputChange={setUserInput}
             userInput={typed}
           />
         </WordsContainer>

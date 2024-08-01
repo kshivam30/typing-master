@@ -2,19 +2,16 @@ import React, { useRef, useEffect } from "react";
 import cn from "classnames";
 import Caret from "./Caret";
 
-interface UserTypingsProps {
-  userInput: string;
-  words: string;
-  onInputChange: (input: string) => void;
-  className?: string;
-}
-
-const UserTypings: React.FC<UserTypingsProps> = ({
+const UserTypings = ({
   userInput,
   words,
-  onInputChange,
   className = "",
+}: {
+  userInput: string;
+  words: string;
+  className?: string;
 }) => {
+  const typedCharacters = userInput.split("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -30,22 +27,22 @@ const UserTypings: React.FC<UserTypingsProps> = ({
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onInputChange(e.target.value);
-  };
-
   return (
     <div className={className} onClick={handleContainerClick}>
       <input
         ref={inputRef}
         type="text"
-        className="absolute opacity-0 pointer-events-none"
+        className="absolute opacity-0 w-0 h-0"
         value={userInput}
-        onChange={handleChange}
+        onChange={() => {}}
         autoFocus
       />
-      {userInput.split("").map((char, index) => (
-        <Character key={`${char}_${index}`} actual={char} expected={words[index]} />
+      {typedCharacters.map((char, index) => (
+        <Character
+          key={`${char}_${index}`}
+          actual={char}
+          expected={words[index]}
+        />
       ))}
       <Caret />
     </div>
