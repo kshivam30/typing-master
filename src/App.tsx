@@ -4,12 +4,13 @@ import RestartButton from "./components/RestartButton";
 import Results from "./components/Results";
 import UserTypings from "./components/useTypings";
 import useEngine from "./hooks/useEngine";
+import useTypings from "./hooks/useTypings";
 import { calculateAccuracyPercentage } from "./utils/helpers";
 import Header from "./components/Header";
 
-const App = () => {
-  const { words, typed, timeLeft, errors, state, restart, totalTyped } =
-    useEngine();
+const App: React.FC = () => {
+  const { words, timeLeft, errors, state, restart } = useEngine();
+  const { typed, handleInputChange, totalTyped, clearTyped } = useTypings(state !== "finish");
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-50" style={{padding: "20px"}}>
@@ -20,13 +21,17 @@ const App = () => {
           <GeneratedWords key={words} words={words} />
           <UserTypings
             className="absolute inset-0"
-            words={words}
             userInput={typed}
+            onInputChange={handleInputChange}
+            words={words}
           />
         </WordsContainer>
         <RestartButton
-          className={"mx-auto mt-10 text-slate-500"}
-          onRestart={restart}
+          className="mx-auto mt-10 text-slate-500"
+          onRestart={() => {
+            restart();
+            clearTyped();
+          }}
         />
         <Results
           className="mt-10"
@@ -40,7 +45,11 @@ const App = () => {
   );
 };
 
-const WordsContainer = ({ children }: { children: React.ReactNode }) => {
+interface WordsContainerProps {
+  children: React.ReactNode;
+}
+
+const WordsContainer: React.FC<WordsContainerProps> = ({ children }) => {
   return (
     <div className="relative text-3xl leading-relaxed break-all mt-3" >
       {children}
@@ -48,7 +57,11 @@ const WordsContainer = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const CountdownTimer = ({ timeLeft }: { timeLeft: number }) => {
+interface CountdownTimerProps {
+  timeLeft: number;
+}
+
+const CountdownTimer: React.FC<CountdownTimerProps> = ({ timeLeft }) => {
   return <h2 className="text-primary-400 font-medium">Time: {timeLeft}</h2>;
 };
 

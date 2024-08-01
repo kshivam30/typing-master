@@ -2,20 +2,22 @@ import React, { useRef, useEffect } from "react";
 import cn from "classnames";
 import Caret from "./Caret";
 
-const UserTypings = ({
-  userInput,
-  words,
-  className = "",
-}: {
+interface UserTypingsProps {
   userInput: string;
   words: string;
+  onInputChange: (input: string) => void;
   className?: string;
+}
+
+const UserTypings: React.FC<UserTypingsProps> = ({
+  userInput,
+  words,
+  onInputChange,
+  className = "",
 }) => {
-  const typedCharacters = userInput.split("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Focus the input on component mount
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -27,22 +29,22 @@ const UserTypings = ({
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onInputChange(e.target.value);
+  };
+
   return (
     <div className={className} onClick={handleContainerClick}>
       <input
         ref={inputRef}
         type="text"
-        className="absolute opacity-0 w-0 h-0"
+        className="absolute opacity-0 pointer-events-none"
         value={userInput}
-        onChange={() => {}}
+        onChange={handleChange}
         autoFocus
       />
-      {typedCharacters.map((char, index) => (
-        <Character
-          key={`${char}_${index}`}
-          actual={char}
-          expected={words[index]}
-        />
+      {userInput.split("").map((char, index) => (
+        <Character key={`${char}_${index}`} actual={char} expected={words[index]} />
       ))}
       <Caret />
     </div>
