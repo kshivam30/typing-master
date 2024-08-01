@@ -13,7 +13,7 @@ const App: React.FC = () => {
   const { typed, handleInputChange, totalTyped, clearTyped } = useTypings(state !== "finish");
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-50" style={{padding: "20px"}}>
+    <div className="min-h-screen bg-slate-900 text-slate-50 overflow-hidden" style={{padding: "20px"}}>
       <Header />
       <div className="flex flex-col items-center px-0 md:px-20" style={{marginTop: "60px" }}>
         <CountdownTimer timeLeft={timeLeft} />
