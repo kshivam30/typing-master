@@ -1,28 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { isKeyboardCodeAllowed } from "../utils/helpers";
 
 const useTypings = (enabled: boolean) => {
-  const [cursor, setCursor] = useState(0);
   const [typed, setTyped] = useState<string>("");
-  const totalTyped = useRef(0);
+  const [cursor, setCursor] = useState(0);
+  const [totalTyped, setTotalTyped] = useState(0);
 
-  const keydownHandler = useCallback(
-    ({ key, code }: KeyboardEvent) => {
-      if (!enabled || !isKeyboardCodeAllowed(code)) {
-        return;
-      }
+  const handleInputChange = useCallback(
+    (inputValue: string) => {
+      if (!enabled) return;
 
-      switch (key) {
-        case "Backspace":
-          setTyped((prev) => prev.slice(0, -1));
-          setCursor((cursor) => cursor - 1);
-          totalTyped.current -= 1;
-          break;
-        default:
-          setTyped((prev) => prev.concat(key));
-          setCursor((cursor) => cursor + 1);
-          totalTyped.current += 1;
-      }
+      setTyped(inputValue);
+      setCursor(inputValue.length);
+      setTotalTyped(inputValue.length);
     },
     [enabled]
   );
@@ -30,27 +20,15 @@ const useTypings = (enabled: boolean) => {
   const clearTyped = useCallback(() => {
     setTyped("");
     setCursor(0);
+    setTotalTyped(0);
   }, []);
-
-  const resetTotalTyped = useCallback(() => {
-    totalTyped.current = 0;
-  }, []);
-
-  // attach the keydown event listener to record keystrokes
-  useEffect(() => {
-    window.addEventListener("keydown", keydownHandler);
-    // Remove event listeners on cleanup
-    return () => {
-      window.removeEventListener("keydown", keydownHandler);
-    };
-  }, [keydownHandler]);
 
   return {
     typed,
     cursor,
+    handleInputChange,
     clearTyped,
-    resetTotalTyped,
-    totalTyped: totalTyped.current,
+    totalTyped,
   };
 };
 
