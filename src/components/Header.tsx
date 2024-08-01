@@ -12,7 +12,7 @@ const Header = () => {
         <h1 className="text-2xl font-bold">Typing Master</h1>
       </div>
       <a
-        href="https://github.com/yourusername/your-repo-name"
+        href="https://github.com/kshivam30/typing-master.git"
         target="_blank"
         rel="noopener noreferrer"
         className="text-3xl"
