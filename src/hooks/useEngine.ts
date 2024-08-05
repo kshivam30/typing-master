@@ -14,7 +14,9 @@ const useEngine = () => {
   const { timeLeft, startCountdown, resetCountdown } =
     useCountdown(COUNTDOWN_SECONDS);
   const { words, updateWords } = useWords(NUMBER_OF_WORDS);
-  const { cursor, typed, clearTyped, totalTyped } = useTypings(state !== "finish");
+  const { cursor, typed, clearTyped, totalTyped, resetTotalTyped } = useTypings(
+    state !== "finish"
+  );
   const [errors, setErrors] = useState(0);
 
   const isStarting = state === "start" && cursor > 0;
@@ -23,11 +25,12 @@ const useEngine = () => {
   const restart = useCallback(() => {
     debug("restarting...");
     resetCountdown();
+    resetTotalTyped();
     setState("start");
     setErrors(0);
     updateWords();
     clearTyped();
-  }, [clearTyped, updateWords, resetCountdown]);
+  }, [clearTyped, updateWords, resetCountdown, resetTotalTyped]);
 
   const sumErrors = useCallback(() => {
     debug(`cursor: ${cursor} - words.length: ${words.length}`);
