@@ -12,7 +12,6 @@ Typing Master is an engaging web application designed to help users improve thei
 ## How to Use
 
 1. **Start Typing**: The app will display a series of words for you to type.
-2. **Monitor Your Performance**: Keep an eye on your accuracy and errors as you type.
-3. **Results Summary**: Once the time is up, you will receive a summary of your performance, including your accuracy percentage, the number of errors, and total words typed.
+2. **Results Summary**: Once the time is up, you will receive a summary of your performance, including your accuracy percentage, the number of errors, and total words typed.
 
 
