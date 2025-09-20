@@ -6,6 +6,7 @@ const useCountdown = (seconds: number) => {
 
   const hasTimerEnded = timeLeft <= 0;
   const isRunning = intervalRef.current !== null;
+  
 
   const startCountdown = useCallback(() => {
     if (!hasTimerEnded && !isRunning) {
